@@ -1,0 +1,13 @@
+[package]
+name = "test_tower_middleware"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bytes = "1.1.0"
+http = "0.2.7"
+http-body = "0.4.4"
+hyper = { version = "0.14.18", features = ["full"] }
+tokio = { version = "1.18.1", features = ["macros", "rt"] }
+tower = { version = "0.4.12", features = ["util"] }
+tower-http = {version = "0.3.2", features = ["decompression-br", "decompression-gzip"] }
