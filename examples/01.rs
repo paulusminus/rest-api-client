@@ -6,7 +6,7 @@ const PASSWORD: &str = "CumGranoSalis";
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
-    let mut api_client = ApiClient::new(PREFIX, Some(BasicAuthentication::new(USERNAME, PASSWORD)));
+    let api_client = ApiClient::new(PREFIX, Some(BasicAuthentication::new(USERNAME, PASSWORD)));
     let lyrics = api_client.lyrics().await?;
     println!("{:#?}", lyrics);
     Ok(())

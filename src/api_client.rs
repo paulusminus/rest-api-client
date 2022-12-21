@@ -24,13 +24,6 @@ impl BasicAuthentication {
     }
 }
 
-fn use_authentication(request_builder: RequestBuilder, auth: Option<BasicAuthentication>) -> RequestBuilder {
-    match auth {
-        Some(a) => request_builder.basic_auth(a.username, Some(a.password)),
-        None => request_builder,
-    }
-}
-
 impl ApiClient {
     pub fn new(prefix: &str, basic_authentication: Option<BasicAuthentication>) -> Self {
         Self {
@@ -40,8 +33,15 @@ impl ApiClient {
         }
     }
 
-    pub async fn lyrics(&mut self) -> Result<Vec<Lyric>> {
-        use_authentication(self.client.get(URL), self.basic_authentication.take())
+    fn add_authentication(&self, request_builder: RequestBuilder) -> RequestBuilder {
+        match &self.basic_authentication {
+            Some(auth) => request_builder.basic_auth(auth.username.clone(), Some(auth.password.clone())),
+            None => request_builder,
+        }
+    }
+
+    pub async fn lyrics(&self) -> Result<Vec<Lyric>> {
+        self.add_authentication(self.client.get(URL))
             .send()
             .await?
             .json::<Vec<Lyric>>()
