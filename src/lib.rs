@@ -2,5 +2,5 @@ mod api_client;
 mod error;
 
 pub use error::Error;
-pub use api_client::ApiClient;
-pub type Result<T> = std::result::Result<T, Error>;
+pub use api_client::{ApiClient, BasicAuthentication};
+pub type Result<T> = reqwest::Result<T>;
