@@ -1,6 +1,6 @@
 use std::{fmt::Display};
 
-use json_api_client::{LiplApiClient, BasicAuthentication};
+use json_api_client::{LiplApiClient, BasicAuthentication, Authentication};
 use lipl_core::{HasSummary, LiplRepo, reexport::anyhow::Result};
 
 const PREFIX: &str = "https://lipl.paulmin.nl/api/v1/";
@@ -27,13 +27,10 @@ impl<T> VecExt for Result<Vec<T>> where T: Display + HasSummary {
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
-    let client = LiplApiClient::new(PREFIX, Some(BasicAuthentication::new(USERNAME, PASSWORD)));
-
-    // let lyrics = api_client.get::<Vec<Lyric>>("lyric?full=true").await?;
-    // println!("{:#?}", lyrics);
-
-    // let playlists = api_client.get::<Vec<Playlist>>("playlist?full=true").await?;
-    // println!("{:#?}", playlists);
+    let auth = Authentication::Basic(
+        BasicAuthentication::new(USERNAME, PASSWORD),
+    );
+    let client = LiplApiClient::new(PREFIX, auth);
 
     client.get_lyric_summaries().await.display_titles("Lyrics", ", ");
     client.get_playlist_summaries().await.display_titles("Playlists", ", ");

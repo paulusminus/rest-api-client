@@ -1,4 +1,4 @@
-use crate::{ApiClient, BasicAuthentication};
+use crate::{ApiClient, api_client::Authentication};
 use async_trait::async_trait;
 use lipl_core::{LiplRepo, Lyric, reexport::anyhow::{self, Result, anyhow}, Summary, Uuid, LyricPost, Playlist, PlaylistPost};
 
@@ -12,7 +12,7 @@ pub struct LiplApiClient {
 }
 
 impl LiplApiClient {
-    pub fn new(prefix: &str, auth: Option<BasicAuthentication>) -> Self {
+    pub fn new(prefix: &str, auth: Authentication) -> Self {
         Self {
             api_client: ApiClient::new(prefix, auth)
         }

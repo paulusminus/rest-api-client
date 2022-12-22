@@ -7,7 +7,14 @@ use serde::{de::DeserializeOwned, Serialize};
 pub struct ApiClient {
     client: Client,
     _prefix: String,
-    basic_authentication: Option<BasicAuthentication>,
+    authentication: Authentication,
+}
+
+#[derive(Clone)]
+pub enum Authentication {
+    Basic(BasicAuthentication),
+    Bearer(String),
+    None,
 }
 
 #[derive(Clone)]
@@ -26,11 +33,11 @@ impl BasicAuthentication {
 }
 
 impl ApiClient {
-    pub fn new(prefix: &str, basic_authentication: Option<BasicAuthentication>) -> Self {
+    pub fn new(prefix: &str, authentication: Authentication) -> Self {
         Self {
             client: Client::builder().user_agent("Rest api client").build().unwrap(),
             _prefix: prefix.to_owned(),
-            basic_authentication,
+            authentication,
         }
     }
 
@@ -39,9 +46,16 @@ impl ApiClient {
         T: Serialize,
     {
         let mut builder = f(&self.client, self.uri(uri));
-        if let Some(auth) = &self.basic_authentication {
-            builder = builder.basic_auth(auth.username.clone(), Some(auth.password.clone()));
-        }
+        match &self.authentication {
+            Authentication::Basic(basic) => {
+                builder = builder.basic_auth(basic.username.clone(), Some(basic.password.clone()));                
+            },
+            Authentication::Bearer(token) => {
+                builder = builder.bearer_auth(token);
+            },
+            Authentication::None => {},
+        };
+
         if let Some(object) = t {
             builder = builder.json(&object)
         }
