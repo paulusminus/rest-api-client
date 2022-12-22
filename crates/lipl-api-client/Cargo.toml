@@ -1,0 +1,13 @@
+[package]
+name = "lipl-api-client"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+async-trait = "0.1.60"
+lipl-core = { path = "/home/paul/Code/rust/lipl/crates/lipl-core" }
+json-api-client = { path = "../json-api-client" }
+anyhow = "1.0.68"
+
+[dev-dependencies]
+tokio = { version = "1.23", features = ["rt", "macros"] }

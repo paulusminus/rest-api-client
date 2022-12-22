@@ -1,6 +1,7 @@
 use std::{fmt::Display};
 
-use json_api_client::{LiplApiClient, BasicAuthentication, Authentication};
+use lipl_api_client::LiplApiClient;
+use json_api_client::{BasicAuthentication, Authentication};
 use lipl_core::{HasSummary, LiplRepo, reexport::anyhow::Result};
 
 const PREFIX: &str = "https://lipl.paulmin.nl/api/v1/";

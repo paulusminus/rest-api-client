@@ -6,7 +6,7 @@ use serde::{de::DeserializeOwned, Serialize};
 #[derive(Clone)]
 pub struct ApiClient {
     client: Client,
-    _prefix: String,
+    prefix: String,
     authentication: Authentication,
 }
 
@@ -36,7 +36,7 @@ impl ApiClient {
     pub fn new(prefix: &str, authentication: Authentication) -> Self {
         Self {
             client: Client::builder().user_agent("Rest api client").build().unwrap(),
-            _prefix: prefix.to_owned(),
+            prefix: prefix.to_owned(),
             authentication,
         }
     }
@@ -46,14 +46,17 @@ impl ApiClient {
         T: Serialize,
     {
         let mut builder = f(&self.client, self.uri(uri));
-        match &self.authentication {
-            Authentication::Basic(basic) => {
-                builder = builder.basic_auth(basic.username.clone(), Some(basic.password.clone()));                
-            },
-            Authentication::Bearer(token) => {
-                builder = builder.bearer_auth(token);
-            },
-            Authentication::None => {},
+        builder = match &self.authentication {
+            Authentication::Basic(basic) => 
+                builder.basic_auth(
+                    basic.username.clone(),
+                    Some(basic.password.clone())
+                )
+            ,
+            Authentication::Bearer(token) =>
+                builder.bearer_auth(token)
+            ,
+            Authentication::None => builder,
         };
 
         if let Some(object) = t {
@@ -64,7 +67,7 @@ impl ApiClient {
     }
 
     fn uri(&self, uri: &str) -> String {
-        format!("{}{}", self._prefix, uri)
+        format!("{}{}", self.prefix, uri)
     }
 
     pub async fn delete(&self, uri: &str) -> Result<()> {
@@ -103,6 +106,4 @@ impl ApiClient {
             .and_then(|r| r.json::<T>())
             .await
     }
-
-
 }

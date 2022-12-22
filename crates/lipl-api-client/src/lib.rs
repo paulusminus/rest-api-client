@@ -1,6 +1,8 @@
-use crate::{ApiClient, api_client::Authentication};
+use anyhow::anyhow;
 use async_trait::async_trait;
-use lipl_core::{LiplRepo, Lyric, reexport::anyhow::{self, Result, anyhow}, Summary, Uuid, LyricPost, Playlist, PlaylistPost};
+use lipl_core::{LiplRepo, Lyric, LyricPost, Playlist, PlaylistPost, Summary, Uuid};
+use json_api_client::{ApiClient, Authentication, Error};
+use anyhow::Result as Result;
 
 const LYRIC: &str = "lyric";
 const PLAYLIST: &str = "playlist";
@@ -19,7 +21,7 @@ impl LiplApiClient {
     }
 }
 
-fn to_anyhow(error: reqwest::Error) -> anyhow::Error {
+fn to_anyhow(error: Error) -> anyhow::Error {
     anyhow!(error)
 }
 
