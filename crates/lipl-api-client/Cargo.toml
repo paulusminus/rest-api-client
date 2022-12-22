@@ -4,10 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-async-trait = "0.1.60"
-lipl-core = { path = "/home/paul/Code/rust/lipl/crates/lipl-core" }
+async-trait = "0.1"
+lipl-core = { path = "../../../lipl/crates/lipl-core" }
 json-api-client = { path = "../json-api-client" }
-anyhow = "1.0.68"
+anyhow = "1.0"
 
 [dev-dependencies]
 tokio = { version = "1.23", features = ["rt", "macros"] }
