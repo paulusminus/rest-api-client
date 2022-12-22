@@ -17,6 +17,20 @@ pub enum Authentication {
     None,
 }
 
+impl Authentication {
+    pub fn new_none() -> Self {
+        Authentication::None
+    }
+    pub fn new_basic(username: &str, password: &str) -> Self {
+        Authentication::Basic(
+            BasicAuthentication::new(username, password)
+        )
+    }
+    pub fn new_bearer(token: &str) -> Self {
+        Authentication::Bearer(token.to_owned())
+    }
+}
+
 #[derive(Clone)]
 pub struct BasicAuthentication {
     username: String,

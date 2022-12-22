@@ -1,7 +1,8 @@
 use anyhow::anyhow;
 use async_trait::async_trait;
 use lipl_core::{LiplRepo, Lyric, LyricPost, Playlist, PlaylistPost, Summary, Uuid};
-use json_api_client::{ApiClient, Authentication, Error};
+use json_api_client::{ApiClient, Error};
+pub use json_api_client::{Authentication, BasicAuthentication};
 use anyhow::Result as Result;
 
 const LYRIC: &str = "lyric";
