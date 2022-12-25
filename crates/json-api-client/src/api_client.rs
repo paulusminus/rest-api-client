@@ -1,6 +1,6 @@
 use crate::{Result};
-use futures_util::TryFutureExt;
-use reqwest::{Client, RequestBuilder};
+use futures_util::{future::ready, TryFutureExt};
+use reqwest::{Client, RequestBuilder, Response};
 use serde::{de::DeserializeOwned, Serialize};
 
 #[derive(Clone)]
@@ -40,8 +40,8 @@ pub struct BasicAuthentication {
 impl BasicAuthentication {
     pub fn new(username: &str, password: &str) -> Self {
         Self {
-            username: username.to_owned(),
-            password: password.to_owned(),
+            username: username.into(),
+            password: password.into(),
         }
     }
 }
@@ -50,7 +50,7 @@ impl ApiClient {
     pub fn new(prefix: &str, authentication: Authentication) -> Self {
         Self {
             client: Client::builder().user_agent("Rest api client").build().unwrap(),
-            prefix: prefix.to_owned(),
+            prefix: prefix.into(),
             authentication,
         }
     }
@@ -85,8 +85,10 @@ impl ApiClient {
     }
 
     pub async fn delete(&self, uri: &str) -> Result<()> {
-        let response = self.add_authentication::<()>(uri, Client::delete, None).send().await?;
-        response.error_for_status().map(|_| ())
+        self.add_authentication::<()>(uri, Client::delete, None)
+            .send()
+            .and_then(|r| ready(r.error_for_status()).map_ok(|_| ()))
+            .await
     }
 
     pub async fn get<T>(&self, uri: &str) -> Result<T>
@@ -95,7 +97,7 @@ impl ApiClient {
     {
         self.add_authentication::<()>(uri, Client::get, None)
             .send()
-            .and_then(|r| r.json::<T>())
+            .and_then(Response::json::<T>)
             .await
     }
 
@@ -106,7 +108,7 @@ impl ApiClient {
     {
         self.add_authentication::<U>(uri, Client::post, Some(object))
             .send()
-            .and_then(|r| r.json::<T>())
+            .and_then(Response::json::<T>)
             .await
     }
 
@@ -117,7 +119,7 @@ impl ApiClient {
     {
         self.add_authentication::<U>(uri, Client::put, Some(object))
             .send()
-            .and_then(|r| r.json::<T>())
+            .and_then(Response::json::<T>)
             .await
     }
 }
