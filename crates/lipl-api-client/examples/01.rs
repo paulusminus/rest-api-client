@@ -1,5 +1,5 @@
 use lipl_api_client::{Authentication, LiplApiClient};
-use lipl_core::{HasSummary, LiplRepo, reexport::anyhow::Result};
+use lipl_core::{HasSummary, LiplRepo, Result};
 
 const PREFIX: &str = "https://lipl.paulmin.nl/api/v1/";
 const USERNAME: &str = "paul";
