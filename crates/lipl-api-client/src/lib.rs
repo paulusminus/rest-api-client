@@ -41,7 +41,7 @@ impl LiplRepo for LiplApiClient {
             .await
     }
 
-    async fn post_lyric(&self, lyric: Lyric) -> Result<Lyric> {
+    async fn upsert_lyric(&self, lyric: Lyric) -> Result<Lyric> {
         self.api_client.post(&format!("{LYRIC}/{}", lyric.id), LyricPost::from(lyric))
             .err_into()
             .await
@@ -71,7 +71,7 @@ impl LiplRepo for LiplApiClient {
             .await
     }
 
-    async fn post_playlist(&self, playlist: Playlist) -> Result<Playlist> {
+    async fn upsert_playlist(&self, playlist: Playlist) -> Result<Playlist> {
         self.api_client.post(&format!("{PLAYLIST}/{}", playlist.id), PlaylistPost::from(playlist))
             .err_into()
             .await
