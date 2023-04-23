@@ -17,10 +17,13 @@ pub enum Authentication {
     None,
 }
 
-impl Authentication {
-    pub fn new_none() -> Self {
+impl Default for Authentication {
+    fn default() -> Self {
         Authentication::None
     }
+}
+
+impl Authentication {
     pub fn new_basic(username: &str, password: &str) -> Self {
         Authentication::Basic(
             BasicAuthentication::new(username, password)
