@@ -10,17 +10,12 @@ pub struct ApiClient {
     authentication: Authentication,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub enum Authentication {
     Basic(BasicAuthentication),
     Bearer(String),
+    #[default]
     None,
-}
-
-impl Default for Authentication {
-    fn default() -> Self {
-        Authentication::None
-    }
 }
 
 impl Authentication {

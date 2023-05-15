@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 async-trait = "0.1"
-lipl-core = { path = "../../../lipl/crates/lipl-core", default-features = false, features = ["reqwest"] }
+lipl-core = { path = "../../../lipl-repo-rest/crates/lipl-core", default-features = false, features = ["reqwest"] }
 json-api-client = { path = "../json-api-client" }
 futures-util = "0.3.25"
 
