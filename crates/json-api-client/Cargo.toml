@@ -1,7 +1,8 @@
 [package]
 name = "json-api-client"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
 
 [dependencies]
 futures-util = "0.3"
