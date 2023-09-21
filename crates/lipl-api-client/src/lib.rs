@@ -1,8 +1,10 @@
 use async_trait::async_trait;
 use futures_util::TryFutureExt;
-use lipl_core::{LiplRepo, Lyric, LyricPost, Playlist, PlaylistPost, Result, Summary, Uuid};
-use json_api_client::{ApiClient};
+use json_api_client::ApiClient;
 pub use json_api_client::{Authentication, BasicAuthentication};
+use lipl_core::{
+    error::reqwest_error, LiplRepo, Lyric, LyricPost, Playlist, PlaylistPost, Result, Summary, Uuid,
+};
 
 const LYRIC: &str = "lyric";
 const PLAYLIST: &str = "playlist";
@@ -16,7 +18,7 @@ pub struct LiplApiClient {
 impl LiplApiClient {
     pub fn new(prefix: &str, auth: Authentication) -> Self {
         Self {
-            api_client: ApiClient::new(prefix, auth)
+            api_client: ApiClient::new(prefix, auth),
         }
     }
 }
@@ -24,62 +26,69 @@ impl LiplApiClient {
 #[async_trait]
 impl LiplRepo for LiplApiClient {
     async fn get_lyrics(&self) -> Result<Vec<Lyric>> {
-        self.api_client.get(&format!("{LYRIC}?{FULL}"))
-            .err_into()
+        self.api_client
+            .get(&format!("{LYRIC}?{FULL}"))
+            .map_err(reqwest_error)
             .await
     }
 
     async fn get_lyric_summaries(&self) -> Result<Vec<Summary>> {
-        self.api_client.get(LYRIC)
-            .err_into()
-            .await
+        self.api_client.get(LYRIC).map_err(reqwest_error).await
     }
 
     async fn get_lyric(&self, uuid: Uuid) -> Result<Lyric> {
-        self.api_client.get(&format!("{LYRIC}/{uuid}"))
-            .err_into()
+        self.api_client
+            .get(&format!("{LYRIC}/{uuid}"))
+            .map_err(reqwest_error)
             .await
     }
 
     async fn upsert_lyric(&self, lyric: Lyric) -> Result<Lyric> {
-        self.api_client.post(&format!("{LYRIC}/{}", lyric.id), LyricPost::from(lyric))
-            .err_into()
+        self.api_client
+            .post(&format!("{LYRIC}/{}", lyric.id), LyricPost::from(lyric))
+            .map_err(reqwest_error)
             .await
     }
 
     async fn delete_lyric(&self, uuid: Uuid) -> Result<()> {
-        self.api_client.delete(&format!("{LYRIC}/{uuid}"))
-            .err_into()
+        self.api_client
+            .delete(&format!("{LYRIC}/{uuid}"))
+            .map_err(reqwest_error)
             .await
     }
 
     async fn get_playlists(&self) -> Result<Vec<Playlist>> {
-        self.api_client.get(&format!("{PLAYLIST}?{FULL}"))
-            .err_into()
+        self.api_client
+            .get(&format!("{PLAYLIST}?{FULL}"))
+            .map_err(reqwest_error)
             .await
     }
 
     async fn get_playlist_summaries(&self) -> Result<Vec<Summary>> {
-        self.api_client.get(PLAYLIST)
-            .err_into()
-            .await
+        self.api_client.get(PLAYLIST).map_err(reqwest_error).await
     }
 
     async fn get_playlist(&self, uuid: Uuid) -> Result<Playlist> {
-        self.api_client.get(&format!("{PLAYLIST}/{uuid}"))
-            .err_into()
+        self.api_client
+            .get(&format!("{PLAYLIST}/{uuid}"))
+            .map_err(reqwest_error)
             .await
     }
 
     async fn upsert_playlist(&self, playlist: Playlist) -> Result<Playlist> {
-        self.api_client.post(&format!("{PLAYLIST}/{}", playlist.id), PlaylistPost::from(playlist))
-            .err_into()
+        self.api_client
+            .post(
+                &format!("{PLAYLIST}/{}", playlist.id),
+                PlaylistPost::from(playlist),
+            )
+            .map_err(reqwest_error)
             .await
     }
 
     async fn delete_playlist(&self, uuid: Uuid) -> Result<()> {
-        self.api_client.delete(&format!("{PLAYLIST}/{uuid}"))
-            .err_into()
+        self.api_client
+            .delete(&format!("{PLAYLIST}/{uuid}"))
+            .map_err(reqwest_error)
             .await
     }
 

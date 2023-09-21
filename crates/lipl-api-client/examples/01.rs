@@ -9,11 +9,10 @@ trait VecExt {
     fn display_titles(self, name: &str, seperator: &str) -> String;
 }
 
-impl<I> VecExt for I 
+impl<I> VecExt for I
 where
     I: IntoIterator,
     I::Item: HasSummary,
-
 {
     fn display_titles(self, name: &str, separator: &str) -> String {
         let s = self
@@ -30,16 +29,16 @@ async fn main() -> Result<()> {
     let auth = Authentication::new_basic(USERNAME, PASSWORD);
     let client = LiplApiClient::new(PREFIX, auth);
 
-    let lyric_titles = 
-        client.get_lyric_summaries()
+    let lyric_titles = client
+        .get_lyric_summaries()
         .await
         .map(|s| s.display_titles("Lyrics", "\n- "))?;
     println!("{lyric_titles}");
 
     println!();
 
-    let playlist_titles =
-        client.get_playlist_summaries()
+    let playlist_titles = client
+        .get_playlist_summaries()
         .await
         .map(|s| s.display_titles("Playlists", "\n- "))?;
     println!("{playlist_titles}");
