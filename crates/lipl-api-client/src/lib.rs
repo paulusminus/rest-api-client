@@ -10,16 +10,15 @@ const LYRIC: &str = "lyric";
 const PLAYLIST: &str = "playlist";
 const FULL: &str = "full=true";
 
-#[derive(Clone)]
 pub struct LiplApiClient {
     api_client: ApiClient,
 }
 
 impl LiplApiClient {
-    pub fn new(prefix: &str, auth: Authentication) -> Self {
-        Self {
-            api_client: ApiClient::new(prefix, auth),
-        }
+    pub fn try_new(prefix: &str, auth: Authentication) -> Result<Self> {
+        ApiClient::try_new(prefix, auth, None)
+        .map_err(reqwest_error)
+        .map(|api_client| Self { api_client })
     }
 }
 

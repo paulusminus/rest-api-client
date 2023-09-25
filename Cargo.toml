@@ -3,6 +3,8 @@ resolver = "2"
 members = ["crates/*"]
 
 [workspace.package]
+authors = ["Paul Min"]
+edition = "2021"
+license = "MIT"
 rust-version = "1.64.0"
 version = "0.1.0"
-edition = "2021"

@@ -27,7 +27,7 @@ where
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
     let auth = Authentication::new_basic(USERNAME, PASSWORD);
-    let client = LiplApiClient::new(PREFIX, auth);
+    let client = LiplApiClient::try_new(PREFIX, auth)?;
 
     let lyric_titles = client
         .get_lyric_summaries()
