@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use futures_util::TryFutureExt;
-use json_api_client::ApiClient;
+pub use json_api_client::{ApiClient, ApiClientBuilder};
 pub use json_api_client::{Authentication, BasicAuthentication};
 use lipl_core::{
     error::reqwest_error, LiplRepo, Lyric, LyricPost, Playlist, PlaylistPost, Result, Summary, Uuid,
@@ -14,11 +14,19 @@ pub struct LiplApiClient {
     api_client: ApiClient,
 }
 
+impl From<ApiClient> for LiplApiClient {
+    fn from(value: ApiClient) -> Self {
+        Self { api_client: value }
+    }
+}
+
 impl LiplApiClient {
     pub fn try_new(prefix: &str, auth: Authentication) -> Result<Self> {
-        ApiClient::try_new(prefix, auth, None)
-        .map_err(reqwest_error)
-        .map(|api_client| Self { api_client })
+        ApiClientBuilder::new(prefix)
+            .authentication(auth)
+            .build()
+            .map_err(reqwest_error)
+            .map(LiplApiClient::from)
     }
 }
 

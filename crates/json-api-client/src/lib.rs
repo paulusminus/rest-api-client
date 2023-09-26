@@ -1,8 +1,8 @@
 #![doc = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/README.md"))]
 
 use futures_util::{future::ready, TryFutureExt};
-use reqwest::{Client, RequestBuilder, Response, Result};
 pub use reqwest::Error;
+use reqwest::{Client, RequestBuilder, Response, Result};
 use serde::{de::DeserializeOwned, Serialize};
 
 /// Before one can do any api request, an ApiClient must be constructed
@@ -12,9 +12,46 @@ pub struct ApiClient {
     authentication: Authentication,
 }
 
+pub struct ApiClientBuilder {
+    prefix: String,
+    authentication: Authentication,
+    user_agent: Option<String>,
+}
+
+impl ApiClientBuilder {
+    pub fn new(prefix: &str) -> Self {
+        Self {
+            prefix: prefix.to_owned(),
+            authentication: Authentication::default(),
+            user_agent: None,
+        }
+    }
+    pub fn authentication(&mut self, auth: Authentication) -> &mut Self {
+        self.authentication = auth;
+        self
+    }
+    pub fn user_agent(&mut self, user_agent: &str) -> &mut Self {
+        self.user_agent = Some(user_agent.to_owned());
+        self
+    }
+    pub fn build(&self) -> Result<ApiClient> {
+        Client::builder()
+            .user_agent(
+                self.user_agent
+                    .clone()
+                    .unwrap_or("Rest Api Client".to_owned()),
+            )
+            .build()
+            .map(|client| ApiClient {
+                authentication: self.authentication.clone(),
+                client,
+                prefix: self.prefix.clone(),
+            })
+    }
+}
 /// This library support two ways of authentication
 /// Either Basic of Bearer
-#[derive(Default)]
+#[derive(Clone, Default)]
 pub enum Authentication {
     Basic(BasicAuthentication),
     Bearer(String),
@@ -31,6 +68,7 @@ impl Authentication {
     }
 }
 
+#[derive(Clone)]
 pub struct BasicAuthentication {
     username: String,
     password: String,
@@ -47,27 +85,6 @@ impl BasicAuthentication {
 }
 
 impl ApiClient {
-    /// Try to create a new instance of ApiClient
-    /// 
-    /// # Example
-    /// 
-    /// ```
-    /// # use json_api_client::{ApiClient, Authentication, Error};
-    /// # use placeholder::{PLACEHOLDER_BASE};
-    /// let api_client = ApiClient::try_new(PLACEHOLDER_BASE, Authentication::None, None)?;
-    /// # Ok::<(), Error>(())
-    /// ```
-    pub fn try_new(prefix: &str, authentication: Authentication, user_agent: Option<&str>) -> Result<Self> {
-        Client::builder()
-            .user_agent(user_agent.unwrap_or("Rest json api client"))
-            .build()
-            .map(|client| Self {
-                client,
-                prefix: prefix.into(),
-                authentication,
-            })
-    }
-
     fn create_request<T>(
         &self,
         uri: &str,
@@ -97,17 +114,18 @@ impl ApiClient {
         format!("{}{}", self.prefix, uri)
     }
 
-    /// # Example 
-    /// 
+    /// # Example
+    ///
     /// Try to delete a post with specific id from [Json Placeholder](https://jsonplaceholder.typicode.com/)
-    /// 
+    ///
     /// ```
-    /// # use json_api_client::{ApiClient, Authentication, Error};
+    /// # use json_api_client::{ApiClientBuilder, Authentication, Error};
     /// # use placeholder::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///     let base = "https://jsonplaceholder.typicode.com/";
-    ///     ApiClient::try_new(base, Authentication::None, None)?
+    ///     ApiClientBuilder::new(base)
+    ///         .build()?
     ///         .delete("posts/1")
     ///         .await?;
     ///
@@ -121,17 +139,18 @@ impl ApiClient {
             .await
     }
 
-    /// # Example 1 
-    /// 
+    /// # Example 1
+    ///
     /// Try to return a list of posts from [JsonPlaceholder](https://jsonplaceholder.typicode.com/)
-    /// 
+    ///
     /// ```rust
-    /// # use json_api_client::{ApiClient, Authentication, Error};
+    /// # use json_api_client::{ApiClientBuilder, Authentication, Error};
     /// # use placeholder::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///     let base = "https://jsonplaceholder.typicode.com/";
-    ///     let posts = ApiClient::try_new(base, Authentication::None, None)?
+    ///     let posts = ApiClientBuilder::new(base)
+    ///         .build()?
     ///         .get::<Vec<Post>>("posts")
     ///         .await?;
     ///
@@ -139,18 +158,19 @@ impl ApiClient {
     /// #       Ok::<(), Error>(())
     /// # });
     /// ```
-    /// 
+    ///
     /// # Example 2
-    /// 
+    ///
     /// Try to return a single post with specific id from [Json Placeholder](https://jsonplaceholder.typicode.com/)
-    /// 
+    ///
     /// ```rust
-    /// # use json_api_client::{ApiClient, Authentication, Error};
+    /// # use json_api_client::{ApiClientBuilder, Authentication, Error};
     /// # use placeholder::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///     let base = "https://jsonplaceholder.typicode.com/";
-    ///     let post = ApiClient::try_new(base, Authentication::None, None)?
+    ///     let post = ApiClientBuilder::new(base)
+    ///         .build()?
     ///         .get::<Post>("posts/1")
     ///         .await?;
     ///
@@ -158,27 +178,27 @@ impl ApiClient {
     /// #       Ok::<(), Error>(())
     /// # });
     /// ```
-    pub async fn get<T>(&self, uri: &str) -> Result<T>
+    pub async fn get<R>(&self, uri: &str) -> Result<R>
     where
-        T: DeserializeOwned,
+        R: DeserializeOwned,
     {
         self.create_request::<()>(uri, Client::get, None)
             .send()
-            .and_then(Response::json::<T>)
+            .and_then(Response::json::<R>)
             .await
     }
 
-    /// # Example 
-    /// 
+    /// # Example
+    ///
     /// Try to create a new post on [Json Placeholder](https://jsonplaceholder.typicode.com/)
     /// If successful the created post is returned
-    /// 
+    ///
     /// ```
-    /// # use json_api_client::{ApiClient, Authentication, Error};
+    /// # use json_api_client::{ApiClientBuilder, Authentication, Error};
     /// # use placeholder::Post;
     /// #
     /// # tokio_test::block_on(async {
-    /// 
+    ///
     ///     let new_post = Post {
     ///         id: None,
     ///         title: "Hallo".to_owned(),
@@ -186,36 +206,37 @@ impl ApiClient {
     ///         user_id: Some(34),
     ///     };
     ///     let base = "https://jsonplaceholder.typicode.com/";
-    ///     let post = ApiClient::try_new(base, Authentication::None, None)?
-    ///         .post::<Post, _>("posts", new_post)
+    ///     let post = ApiClientBuilder::new(base)
+    ///         .build()?
+    ///         .post::<_, Post>("posts", new_post)
     ///         .await?;
     ///
     /// #     assert_eq!(post.user_id, Some(34));
     /// #     Ok::<(), Error>(())
     /// # });
     /// ```
-    pub async fn post<T, U>(&self, uri: &str, object: U) -> Result<T>
+    pub async fn post<T, R>(&self, uri: &str, object: T) -> Result<R>
     where
-        T: DeserializeOwned,
-        U: Serialize,
+        T: Serialize,
+        R: DeserializeOwned,
     {
-        self.create_request::<U>(uri, Client::post, Some(object))
+        self.create_request::<T>(uri, Client::post, Some(object))
             .send()
-            .and_then(Response::json::<T>)
+            .and_then(Response::json::<R>)
             .await
     }
 
-    /// # Example 
-    /// 
+    /// # Example
+    ///
     /// Try to change a post with specific id on [Json Placeholder](https://jsonplaceholder.typicode.com/)
     /// If successful the changed post is returned
-    /// 
+    ///
     /// ```
-    /// # use json_api_client::{ApiClient, Authentication, Error};
+    /// # use json_api_client::{ApiClientBuilder, Authentication, Error};
     /// # use placeholder::Post;
     /// #
     /// # tokio_test::block_on(async {
-    /// 
+    ///
     ///     let changed_post = Post {
     ///         id: None,
     ///         title: "Hallo".to_owned(),
@@ -223,22 +244,23 @@ impl ApiClient {
     ///         user_id: Some(34),
     ///     };
     ///     let base = "https://jsonplaceholder.typicode.com/";
-    ///     let post = ApiClient::try_new(base, Authentication::None, None)?
-    ///         .put::<Post, _>("posts/1", changed_post)
+    ///     let post = ApiClientBuilder::new(base)
+    ///         .build()?
+    ///         .put::<_, Post>("posts/1", changed_post)
     ///         .await?;
     ///
     /// #     assert_eq!(post.user_id, Some(34));
     /// #     Ok::<(), Error>(())
     /// # });
     /// ```
-    pub async fn put<T, U>(&self, uri: &str, object: U) -> Result<T>
+    pub async fn put<T, R>(&self, uri: &str, object: T) -> Result<R>
     where
-        T: DeserializeOwned,
-        U: Serialize,
+        T: Serialize,
+        R: DeserializeOwned,
     {
-        self.create_request::<U>(uri, Client::put, Some(object))
+        self.create_request::<T>(uri, Client::put, Some(object))
             .send()
-            .and_then(Response::json::<T>)
+            .and_then(Response::json::<R>)
             .await
     }
 }

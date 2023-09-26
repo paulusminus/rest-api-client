@@ -1,5 +1,5 @@
-use lipl_api_client::{Authentication, LiplApiClient};
-use lipl_core::{HasSummary, LiplRepo, Result};
+use lipl_api_client::{ApiClientBuilder, Authentication, LiplApiClient};
+use lipl_core::{error::reqwest_error, HasSummary, LiplRepo, Result};
 
 const PREFIX: &str = "https://lipl.paulmin.nl/api/v1/";
 const USERNAME: &str = "paul";
@@ -27,7 +27,11 @@ where
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
     let auth = Authentication::new_basic(USERNAME, PASSWORD);
-    let client = LiplApiClient::try_new(PREFIX, auth)?;
+    let client = ApiClientBuilder::new(PREFIX)
+        .authentication(auth)
+        .build()
+        .map_err(reqwest_error)
+        .map(LiplApiClient::from)?;
 
     let lyric_titles = client
         .get_lyric_summaries()
