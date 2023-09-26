@@ -1,10 +1,10 @@
 use async_trait::async_trait;
 use futures_util::TryFutureExt;
-pub use rest_json_client::{ApiClient, ApiClientBuilder};
-pub use rest_json_client::{Authentication, BasicAuthentication};
 use lipl_core::{
     error::reqwest_error, LiplRepo, Lyric, LyricPost, Playlist, PlaylistPost, Result, Summary, Uuid,
 };
+pub use rest_json_client::{ApiClient, ApiClientBuilder};
+pub use rest_json_client::{Authentication, BasicAuthentication};
 
 const LYRIC: &str = "lyric";
 const PLAYLIST: &str = "playlist";
