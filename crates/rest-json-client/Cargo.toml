@@ -1,6 +1,6 @@
 [package]
 authors.workspace = true
-name = "json-api-client"
+name = "rest-json-client"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
