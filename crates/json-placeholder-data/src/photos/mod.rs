@@ -1,3 +1,4 @@
+use crate::{by_id, from_json};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
@@ -23,7 +24,7 @@ pub struct Photo {
 /// assert_eq!(get_all().len(), 5000);
 /// ```
 pub fn get_all() -> Vec<Photo> {
-    serde_json::from_str::<Vec<Photo>>(PLACEHOLDER_JSON_PHOTOS).unwrap()
+    from_json!(PLACEHOLDER_JSON_PHOTOS)
 }
 
 /// Get a photo by id
@@ -37,9 +38,5 @@ pub fn get_all() -> Vec<Photo> {
 /// );
 /// ```
 pub fn get(id: i32) -> Photo {
-    get_all()
-        .into_iter()
-        .filter(|photo| photo.id == Some(id))
-        .last()
-        .unwrap()
+    by_id!(id)
 }

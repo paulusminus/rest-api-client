@@ -1,3 +1,4 @@
+use crate::{by_id, from_json};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
@@ -20,7 +21,7 @@ pub struct Album {
 /// assert_eq!(get_all().len(), 100);
 /// ```
 pub fn get_all() -> Vec<Album> {
-    serde_json::from_str(PLACEHOLDER_JSON_COMMENTS).unwrap()
+    from_json!(PLACEHOLDER_JSON_COMMENTS)
 }
 
 /// Get an album by id
@@ -34,9 +35,5 @@ pub fn get_all() -> Vec<Album> {
 /// );
 /// ```
 pub fn get(id: i32) -> Album {
-    get_all()
-        .into_iter()
-        .filter(|album| album.id == Some(id))
-        .last()
-        .unwrap()
+    by_id!(id)
 }

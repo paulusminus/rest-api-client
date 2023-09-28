@@ -1,3 +1,4 @@
+use crate::{by_id, from_json};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
@@ -50,7 +51,7 @@ pub struct User {
 /// assert_eq!(get_all().len(), 10);
 /// ```
 pub fn get_all() -> Vec<User> {
-    serde_json::from_str(PLACEHOLDER_JSON_USERS).unwrap()
+    from_json!(PLACEHOLDER_JSON_USERS)
 }
 
 /// Get a user by id
@@ -64,9 +65,5 @@ pub fn get_all() -> Vec<User> {
 /// );
 /// ```
 pub fn get(id: i32) -> User {
-    get_all()
-        .into_iter()
-        .filter(|u| u.id == Some(id))
-        .last()
-        .unwrap()
+    by_id!(id)
 }

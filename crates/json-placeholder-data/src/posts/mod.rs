@@ -1,3 +1,4 @@
+use crate::{by_id, from_json};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
@@ -27,7 +28,7 @@ impl std::fmt::Display for Post {
 /// assert_eq!(get_all().len(), 100);
 /// ```
 pub fn get_all() -> Vec<Post> {
-    serde_json::from_str(PLACEHOLDER_JSON_POSTS).unwrap()
+    from_json!(PLACEHOLDER_JSON_POSTS)
 }
 
 /// Get a post by id
@@ -41,9 +42,5 @@ pub fn get_all() -> Vec<Post> {
 /// );
 /// ```
 pub fn get(id: i32) -> Post {
-    get_all()
-        .into_iter()
-        .filter(|p| p.id == Some(id))
-        .last()
-        .unwrap()
+    by_id!(id)
 }

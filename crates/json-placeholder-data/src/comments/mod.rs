@@ -1,3 +1,4 @@
+use crate::{by_id, from_json};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
@@ -22,7 +23,7 @@ pub struct Comment {
 /// assert_eq!(get_all().len(), 500);
 /// ```
 pub fn get_all() -> Vec<Comment> {
-    serde_json::from_str(PLACEHOLDER_JSON_COMMENTS).unwrap()
+    from_json!(PLACEHOLDER_JSON_COMMENTS)
 }
 
 /// Get a comment by id
@@ -36,9 +37,5 @@ pub fn get_all() -> Vec<Comment> {
 /// );
 /// ```
 pub fn get(id: i32) -> Comment {
-    get_all()
-        .into_iter()
-        .filter(|p| p.id == Some(id))
-        .last()
-        .unwrap()
+    by_id!(id)
 }
