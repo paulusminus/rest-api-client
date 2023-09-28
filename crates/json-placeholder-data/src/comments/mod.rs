@@ -15,8 +15,8 @@ pub struct Comment {
 }
 
 /// Get all the comments available
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::comments::get_all;
 /// assert_eq!(get_all().len(), 500);
@@ -26,8 +26,8 @@ pub fn get_all() -> Vec<Comment> {
 }
 
 /// Get a comment by id
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::comments::get;
 /// assert_eq!(
@@ -36,5 +36,9 @@ pub fn get_all() -> Vec<Comment> {
 /// );
 /// ```
 pub fn get(id: i32) -> Comment {
-    get_all().into_iter().filter(|p| p.id == Some(id)).last().unwrap()
+    get_all()
+        .into_iter()
+        .filter(|p| p.id == Some(id))
+        .last()
+        .unwrap()
 }

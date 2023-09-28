@@ -16,8 +16,8 @@ pub struct Photo {
 }
 
 /// Get all the photos available
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::photos::get_all;
 /// assert_eq!(get_all().len(), 5000);
@@ -27,8 +27,8 @@ pub fn get_all() -> Vec<Photo> {
 }
 
 /// Get a photo by id
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::photos::get;
 /// assert_eq!(
@@ -37,5 +37,9 @@ pub fn get_all() -> Vec<Photo> {
 /// );
 /// ```
 pub fn get(id: i32) -> Photo {
-    get_all().into_iter().filter(|photo| photo.id == Some(id)).last().unwrap()
+    get_all()
+        .into_iter()
+        .filter(|photo| photo.id == Some(id))
+        .last()
+        .unwrap()
 }

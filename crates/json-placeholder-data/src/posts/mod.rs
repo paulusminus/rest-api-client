@@ -20,8 +20,8 @@ impl std::fmt::Display for Post {
 }
 
 /// Get all the posts available
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::posts::get_all;
 /// assert_eq!(get_all().len(), 100);
@@ -31,8 +31,8 @@ pub fn get_all() -> Vec<Post> {
 }
 
 /// Get a post by id
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::posts::get;
 /// assert_eq!(
@@ -41,5 +41,9 @@ pub fn get_all() -> Vec<Post> {
 /// );
 /// ```
 pub fn get(id: i32) -> Post {
-    get_all().into_iter().filter(|p| p.id == Some(id)).last().unwrap()
+    get_all()
+        .into_iter()
+        .filter(|p| p.id == Some(id))
+        .last()
+        .unwrap()
 }

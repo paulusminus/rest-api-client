@@ -14,8 +14,8 @@ pub struct Todo {
 }
 
 /// Get all the todos available
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::todos::get_all;
 /// assert_eq!(get_all().len(), 200);
@@ -25,8 +25,8 @@ pub fn get_all() -> Vec<Todo> {
 }
 
 /// Get a todo by id
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::todos::get;
 /// assert_eq!(
@@ -35,5 +35,9 @@ pub fn get_all() -> Vec<Todo> {
 /// );
 /// ```
 pub fn get(id: i32) -> Todo {
-    get_all().into_iter().filter(|todo| todo.id == Some(id)).last().unwrap()
+    get_all()
+        .into_iter()
+        .filter(|todo| todo.id == Some(id))
+        .last()
+        .unwrap()
 }

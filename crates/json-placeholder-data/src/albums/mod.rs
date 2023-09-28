@@ -13,8 +13,8 @@ pub struct Album {
 }
 
 /// Get all the albums available
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::albums::get_all;
 /// assert_eq!(get_all().len(), 100);
@@ -24,8 +24,8 @@ pub fn get_all() -> Vec<Album> {
 }
 
 /// Get an album by id
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::albums::get;
 /// assert_eq!(
@@ -34,5 +34,9 @@ pub fn get_all() -> Vec<Album> {
 /// );
 /// ```
 pub fn get(id: i32) -> Album {
-    get_all().into_iter().filter(|album| album.id == Some(id)).last().unwrap()
+    get_all()
+        .into_iter()
+        .filter(|album| album.id == Some(id))
+        .last()
+        .unwrap()
 }

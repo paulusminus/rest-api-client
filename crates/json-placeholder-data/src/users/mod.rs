@@ -43,8 +43,8 @@ pub struct User {
 }
 
 /// Get all the users available
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::users::get_all;
 /// assert_eq!(get_all().len(), 10);
@@ -54,8 +54,8 @@ pub fn get_all() -> Vec<User> {
 }
 
 /// Get a user by id
-/// 
-/// # Example 
+///
+/// # Example
 /// ```
 /// use json_placeholder_data::users::get;
 /// assert_eq!(
@@ -64,5 +64,9 @@ pub fn get_all() -> Vec<User> {
 /// );
 /// ```
 pub fn get(id: i32) -> User {
-    get_all().into_iter().filter(|u| u.id == Some(id)).last().unwrap()
+    get_all()
+        .into_iter()
+        .filter(|u| u.id == Some(id))
+        .last()
+        .unwrap()
 }
