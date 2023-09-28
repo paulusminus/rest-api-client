@@ -1,9 +1,11 @@
 [package]
 authors.workspace = true
-name = "rest-json-client"
-version.workspace = true
+description = "Utility library for easing http json api request"
 edition.workspace = true
+license.workspace = true
+name = "rest-json-client"
 rust-version.workspace = true
+version.workspace = true
 
 [dependencies]
 derive_builder = "0.12.0"
