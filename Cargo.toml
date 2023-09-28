@@ -6,5 +6,6 @@ members = ["crates/*"]
 authors = ["Paul Min"]
 edition = "2021"
 license = "MIT"
+repository = "https://github.com/paulusminus/rest-api-client"
 rust-version = "1.64.0"
-version = "0.2.0"
+version = "0.2.1"

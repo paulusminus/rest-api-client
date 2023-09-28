@@ -4,6 +4,7 @@ description = "Copy of the data on https://jsonplaceholder.typicode.com/ used in
 edition.workspace = true
 license.workspace = true
 name = "json-placeholder-data"
+repository.workspace = true
 rust-version.workspace = true
 version.workspace = true
 
