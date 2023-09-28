@@ -119,8 +119,8 @@ impl ApiClient {
     /// Try to delete a post with specific id from [Json Placeholder](https://jsonplaceholder.typicode.com/)
     ///
     /// ```
-    /// # use json_api_client::{ApiClientBuilder, Authentication, Error};
-    /// # use placeholder::Post;
+    /// # use rest_json_client::{ApiClientBuilder, Authentication, Error};
+    /// # use json_placeholder_dataposts::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///     let base = "https://jsonplaceholder.typicode.com/";
@@ -144,8 +144,8 @@ impl ApiClient {
     /// Try to return a list of posts from [JsonPlaceholder](https://jsonplaceholder.typicode.com/)
     ///
     /// ```rust
-    /// # use json_api_client::{ApiClientBuilder, Authentication, Error};
-    /// # use placeholder::Post;
+    /// # use rest_json_client::{ApiClientBuilder, Authentication, Error};
+    /// # use json_placeholder_dataposts::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///     let base = "https://jsonplaceholder.typicode.com/";
@@ -164,8 +164,8 @@ impl ApiClient {
     /// Try to return a single post with specific id from [Json Placeholder](https://jsonplaceholder.typicode.com/)
     ///
     /// ```rust
-    /// # use json_api_client::{ApiClientBuilder, Authentication, Error};
-    /// # use placeholder::Post;
+    /// # use rest_json_client::{ApiClientBuilder, Authentication, Error};
+    /// # use json_placeholder_dataposts::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///     let base = "https://jsonplaceholder.typicode.com/";
@@ -194,8 +194,8 @@ impl ApiClient {
     /// If successful the created post is returned
     ///
     /// ```
-    /// # use json_api_client::{ApiClientBuilder, Authentication, Error};
-    /// # use placeholder::Post;
+    /// # use rest_json_client::{ApiClientBuilder, Authentication, Error};
+    /// # use json_placeholder_dataposts::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///
@@ -232,8 +232,8 @@ impl ApiClient {
     /// If successful the changed post is returned
     ///
     /// ```
-    /// # use json_api_client::{ApiClientBuilder, Authentication, Error};
-    /// # use placeholder::Post;
+    /// # use rest_json_client::{ApiClientBuilder, Authentication, Error};
+    /// # use json_placeholder_dataposts::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///

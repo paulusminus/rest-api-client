@@ -7,8 +7,8 @@ GET, POST, PUT and DELETE methods are supported.
 Getting a list of posts from [Json Placeholder](https://jsonplaceholder.typicode.com/)
 
 ```rust
-# use json_api_client::{ApiClientBuilder, Authentication, Error};
-# use placeholder::Post;
+# use rest_json_client::{ApiClientBuilder, Authentication, Error};
+# use placeholder::posts::Post;
 #
 # tokio_test::block_on(async {
     let base = "https://jsonplaceholder.typicode.com/";
