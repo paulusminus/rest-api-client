@@ -1,6 +1,10 @@
 [workspace]
 resolver = "2"
-members = ["crates/*"]
+members = [
+    "crates/json-placeholder-data",
+    "crates/lipl-api-client",
+    "crates/rest-json-client"
+]
 
 [workspace.package]
 authors = ["Paul Min"]

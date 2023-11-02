@@ -8,7 +8,7 @@ Getting a list of posts from [Json Placeholder](https://jsonplaceholder.typicode
 
 ```rust
 # use rest_json_client::{ApiClientBuilder, Authentication, Error};
-# use placeholder::posts::Post;
+# use json_placeholder_data::posts::Post;
 #
 # tokio_test::block_on(async {
     let base = "https://jsonplaceholder.typicode.com/";

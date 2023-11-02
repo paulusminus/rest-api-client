@@ -5,6 +5,8 @@ pub use reqwest::Error;
 use reqwest::{Client, RequestBuilder, Response, Result};
 use serde::{de::DeserializeOwned, Serialize};
 
+const DEFAULT_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), " ", env!("CARGO_PKG_VERSION"));
+
 /// Before one can do any api request, an ApiClient must be constructed
 pub struct ApiClient {
     client: Client,
@@ -39,7 +41,7 @@ impl ApiClientBuilder {
             .user_agent(
                 self.user_agent
                     .clone()
-                    .unwrap_or("Rest Api Client".to_owned()),
+                    .unwrap_or(DEFAULT_USER_AGENT.to_owned()),
             )
             .build()
             .map(|client| ApiClient {
@@ -54,7 +56,7 @@ impl ApiClientBuilder {
 #[derive(Clone, Default)]
 pub enum Authentication {
     Basic(BasicAuthentication),
-    Bearer(String),
+    Bearer(Option<String>),
     #[default]
     None,
 }
@@ -64,7 +66,7 @@ impl Authentication {
         Authentication::Basic(BasicAuthentication::new(username, password))
     }
     pub fn new_bearer(token: &str) -> Self {
-        Authentication::Bearer(token.to_owned())
+        Authentication::Bearer(Some(token.to_owned()))
     }
 }
 
@@ -99,8 +101,13 @@ impl ApiClient {
             Authentication::Basic(basic) => {
                 builder.basic_auth(basic.username.clone(), Some(basic.password.clone()))
             }
-            Authentication::Bearer(token) => builder.bearer_auth(token),
-            Authentication::None => builder,
+            Authentication::Bearer(token) => {
+                match token {
+                    Some(t) => builder.bearer_auth(t.clone()),
+                    None => builder,
+                }
+            }
+            Authentication::None => builder
         };
 
         if let Some(object) = t {
@@ -120,7 +127,7 @@ impl ApiClient {
     ///
     /// ```
     /// # use rest_json_client::{ApiClientBuilder, Authentication, Error};
-    /// # use json_placeholder_dataposts::Post;
+    /// # use json_placeholder_data::posts::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///     let base = "https://jsonplaceholder.typicode.com/";
@@ -145,7 +152,7 @@ impl ApiClient {
     ///
     /// ```rust
     /// # use rest_json_client::{ApiClientBuilder, Authentication, Error};
-    /// # use json_placeholder_dataposts::Post;
+    /// # use json_placeholder_data::posts::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///     let base = "https://jsonplaceholder.typicode.com/";
@@ -165,7 +172,7 @@ impl ApiClient {
     ///
     /// ```rust
     /// # use rest_json_client::{ApiClientBuilder, Authentication, Error};
-    /// # use json_placeholder_dataposts::Post;
+    /// # use json_placeholder_data::posts::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///     let base = "https://jsonplaceholder.typicode.com/";
@@ -195,7 +202,7 @@ impl ApiClient {
     ///
     /// ```
     /// # use rest_json_client::{ApiClientBuilder, Authentication, Error};
-    /// # use json_placeholder_dataposts::Post;
+    /// # use json_placeholder_data::posts::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///
@@ -226,6 +233,20 @@ impl ApiClient {
             .await
     }
 
+    /// use post_validation to get a Json Web Token
+    pub async fn token_request<T>(&mut self, uri: &str, signature: &str, object: T) -> Result<()>
+    where
+        T: Serialize,
+    {
+        let token = self.create_request::<T>(uri, Client::post, Some(object))
+            .header("Signature", signature)
+            .send()
+            .and_then(Response::text)
+            .await?;
+        self.authentication = Authentication::Bearer(Some(token));
+        Ok(())
+    }
+
     /// # Example
     ///
     /// Try to change a post with specific id on [Json Placeholder](https://jsonplaceholder.typicode.com/)
@@ -233,7 +254,7 @@ impl ApiClient {
     ///
     /// ```
     /// # use rest_json_client::{ApiClientBuilder, Authentication, Error};
-    /// # use json_placeholder_dataposts::Post;
+    /// # use json_placeholder_data::posts::Post;
     /// #
     /// # tokio_test::block_on(async {
     ///

@@ -1,7 +1,0 @@
-{
-    "rust-analyzer.linkedProjects": [
-        "./crates/json-api-client/Cargo.toml",
-        "./crates/json-api-client/Cargo.toml"
-    ],
-    "rust-analyzer.showUnlinkedFileNotification": false
-}
