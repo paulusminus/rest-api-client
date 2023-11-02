@@ -101,13 +101,11 @@ impl ApiClient {
             Authentication::Basic(basic) => {
                 builder.basic_auth(basic.username.clone(), Some(basic.password.clone()))
             }
-            Authentication::Bearer(token) => {
-                match token {
-                    Some(t) => builder.bearer_auth(t.clone()),
-                    None => builder,
-                }
-            }
-            Authentication::None => builder
+            Authentication::Bearer(token) => match token {
+                Some(t) => builder.bearer_auth(t.clone()),
+                None => builder,
+            },
+            Authentication::None => builder,
         };
 
         if let Some(object) = t {
@@ -238,7 +236,8 @@ impl ApiClient {
     where
         T: Serialize,
     {
-        let token = self.create_request::<T>(uri, Client::post, Some(object))
+        let token = self
+            .create_request::<T>(uri, Client::post, Some(object))
             .header("Signature", signature)
             .send()
             .and_then(Response::text)
