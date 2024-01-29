@@ -646,6 +646,7 @@ dependencies = [
 [[package]]
 name = "lipl-core"
 version = "0.4.6"
+source = "git+https://github.com/paulusminus/lipl-storage#b415be97140853ffcc77fe4b5756d2ad485b754b"
 dependencies = [
  "async-trait",
  "bincode",
