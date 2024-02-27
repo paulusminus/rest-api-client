@@ -1,9 +1,15 @@
 use lipl_api_client::{ApiClientBuilder, Authentication, LiplApiClient};
 use lipl_core::{error::reqwest_error, HasSummary, LiplRepo, Result};
 
-const PREFIX: &str = "https://lipl.paulmin.nl/api/v1/";
-const USERNAME: &str = "paul";
-const PASSWORD: &str = "CumGranoSalis";
+const PREFIX: &str = "https://www.paulmin.nl/lipl/api/v1/";
+
+fn username() -> String {
+    std::env::var("LIPL_USERNAME").unwrap()
+}
+
+fn password() -> String {
+    std::env::var("LIPL_PASSWORD").unwrap()
+}
 
 trait VecExt {
     fn display_titles(self, name: &str, seperator: &str) -> String;
@@ -26,7 +32,7 @@ where
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
-    let auth = Authentication::new_basic(USERNAME, PASSWORD);
+    let auth = Authentication::new_basic(&username(), &password());
     let client = ApiClientBuilder::new(PREFIX)
         .authentication(auth)
         .build()

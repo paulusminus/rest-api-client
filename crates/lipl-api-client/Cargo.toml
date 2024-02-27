@@ -7,7 +7,7 @@ version.workspace = true
 [dependencies]
 async-trait = "0.1"
 lipl-core = { git = "https://github.com/paulusminus/lipl-storage", default-features = false }
-rest-json-client = "0.2"
+rest-json-client = { version = "0.2", path = "../rest-json-client/" }
 futures-util = "0.3"
 
 [dev-dependencies]
