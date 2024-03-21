@@ -14,3 +14,7 @@ license = "MIT"
 repository = "https://github.com/paulusminus/rest-api-client"
 rust-version = "1.64.0"
 version = "0.2.1"
+
+[profile.release]
+strip = true
+lto = true

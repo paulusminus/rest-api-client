@@ -78,7 +78,7 @@ pub struct BasicAuthentication {
 
 impl BasicAuthentication {
     /// Create a new instance of BasicAuthentication with provided username and password
-    pub fn new(username: &str, password: &str) -> Self {
+    pub fn new<S: Into<String>>(username: S, password: S) -> Self {
         Self {
             username: username.into(),
             password: password.into(),
