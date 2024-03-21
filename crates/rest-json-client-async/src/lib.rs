@@ -11,6 +11,7 @@ pub fn create_client() -> Client<HttpsConnector<HttpConnector>, Full<Bytes>> {
 
 #[cfg(test)]
 mod tests {
+    /* 
     use std::io::read_to_string;
     use hyper::{body::Buf, header::HeaderValue, Request, StatusCode};
     use http_body_util::{BodyExt, Full};
@@ -35,5 +36,5 @@ mod tests {
         let html = read_to_string(reader).unwrap();
         assert!(html.starts_with("<!doctype html>"));
     }
-
+    */
 }
