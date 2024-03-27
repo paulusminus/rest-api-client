@@ -1,17 +1,23 @@
+use http_body_util::Full;
 use hyper::body::Bytes;
 use hyper_rustls::HttpsConnector;
-use hyper_util::{client::legacy::{connect::HttpConnector, Client}, rt::TokioExecutor};
-use http_body_util::Full;
+use hyper_util::{
+    client::legacy::{connect::HttpConnector, Client},
+    rt::TokioExecutor,
+};
 
 pub fn create_client() -> Client<HttpsConnector<HttpConnector>, Full<Bytes>> {
-    let https = hyper_rustls::HttpsConnectorBuilder::new().with_webpki_roots().https_only().enable_http1().build();
+    let https = hyper_rustls::HttpsConnectorBuilder::new()
+        .with_webpki_roots()
+        .https_only()
+        .enable_http1()
+        .build();
     Client::builder(TokioExecutor::new()).build(https)
 }
 
-
 #[cfg(test)]
 mod tests {
-    /* 
+    /*
     use std::io::read_to_string;
     use hyper::{body::Buf, header::HeaderValue, Request, StatusCode};
     use http_body_util::{BodyExt, Full};
@@ -32,7 +38,7 @@ mod tests {
         let collected = body.collect().await.unwrap();
         let buf = collected.aggregate();
         let reader = buf.reader();
-        
+
         let html = read_to_string(reader).unwrap();
         assert!(html.starts_with("<!doctype html>"));
     }

@@ -673,7 +673,7 @@ dependencies = [
 
 [[package]]
 name = "json-placeholder-data"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "serde",
  "serde_json",
@@ -716,7 +716,7 @@ checksum = "01cda141df6706de531b6c46c3a33ecca755538219bd484262fa09410c13539c"
 
 [[package]]
 name = "lipl-api-client"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "async-trait",
  "futures-util",
@@ -1034,7 +1034,7 @@ dependencies = [
 
 [[package]]
 name = "rest-json-client"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "futures-util",
  "json-placeholder-data",
@@ -1046,7 +1046,7 @@ dependencies = [
 
 [[package]]
 name = "rest-json-client-async"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "async-trait",
  "futures-util",
