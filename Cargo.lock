@@ -728,7 +728,7 @@ dependencies = [
 [[package]]
 name = "lipl-core"
 version = "0.4.7"
-source = "git+https://github.com/paulusminus/lipl-storage#b6873431ce2aa8004ed80cc5e44de82796868075"
+source = "git+https://github.com/paulusminus/lipl-storage#5d675e19d9d4604fee526e61ff99ff7eee3fa572"
 dependencies = [
  "async-trait",
  "bincode",
@@ -1148,9 +1148,9 @@ dependencies = [
 
 [[package]]
 name = "rustls-pki-types"
-version = "1.4.0"
+version = "1.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "868e20fada228fefaf6b652e00cc73623d54f8171e7352c18bb281571f2d92da"
+checksum = "ecd36cc4259e3e4514335c4a138c6b43171a8d61d8f5c9348f9fc7529416f247"
 
 [[package]]
 name = "rustls-webpki"
