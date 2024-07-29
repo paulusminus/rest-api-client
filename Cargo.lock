@@ -754,7 +754,7 @@ dependencies = [
 [[package]]
 name = "lipl-core"
 version = "0.4.12"
-source = "git+https://github.com/paulusminus/lipl-storage#fdf6487f08b5935795ca0f6276d616c9fbf0589e"
+source = "git+https://github.com/paulusminus/lipl-storage#eb788a58272090f808ece4c2750d0ced39d24e0b"
 dependencies = [
  "async-trait",
  "bincode",
@@ -1243,11 +1243,12 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.120"
+version = "1.0.121"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4e0d21c9a8cae1235ad58a00c11cb40d4b1e5c784f1ef2c537876ed6ffd8b7c5"
+checksum = "4ab380d7d9f22ef3f21ad3e6c1ebe8e4fc7a2000ccba2e4d71fc96f15b2cb609"
 dependencies = [
  "itoa",
+ "memchr",
  "ryu",
  "serde",
 ]
