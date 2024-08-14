@@ -199,12 +199,13 @@ checksum = "8318a53db07bb3f8dca91a600466bdb3f2eaadeedfdbcf02e1accbad9271ba50"
 
 [[package]]
 name = "cc"
-version = "1.1.10"
+version = "1.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e9e8aabfac534be767c909e0690571677d49f41bd8465ae876fe043d52ba5292"
+checksum = "5fb8dd288a69fc53a1996d7ecfbf4a20d59065bff137ce7e56bbd620de191189"
 dependencies = [
  "jobserver",
  "libc",
+ "shlex",
 ]
 
 [[package]]
@@ -754,7 +755,7 @@ dependencies = [
 [[package]]
 name = "lipl-core"
 version = "0.4.12"
-source = "git+https://github.com/paulusminus/lipl-storage#d69b80eb05be6445813621839f8ca63a32d84dd8"
+source = "git+https://github.com/paulusminus/lipl-storage#b562371c09c86e07882585b9cc060a7a6b5bf28b"
 dependencies = [
  "async-trait",
  "bincode",
