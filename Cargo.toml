@@ -4,7 +4,6 @@ members = [
     "crates/json-placeholder-data",
     "crates/lipl-api-client",
     "crates/rest-json-client",
-    "crates/rest-json-client-async"
 ]
 
 [workspace.package]
