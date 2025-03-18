@@ -1,9 +1,9 @@
 #![doc = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/README.md"))]
 
-use futures_util::{future::ready, TryFutureExt};
+use futures_util::{TryFutureExt, future::ready};
 pub use reqwest::Error;
 use reqwest::{Client, RequestBuilder, Response, Result};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{Serialize, de::DeserializeOwned};
 
 const DEFAULT_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), " ", env!("CARGO_PKG_VERSION"));
 

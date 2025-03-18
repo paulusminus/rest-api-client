@@ -1,5 +1,5 @@
 [workspace]
-resolver = "2"
+resolver = "3"
 members = [
     "crates/json-placeholder-data",
     "crates/lipl-api-client",
@@ -8,10 +8,9 @@ members = [
 
 [workspace.package]
 authors = ["Paul Min"]
-edition = "2021"
+edition = "2024"
 license = "MIT"
 repository = "https://github.com/paulusminus/rest-api-client"
-rust-version = "1.64.0"
 version = "0.2.3"
 
 [profile.release]

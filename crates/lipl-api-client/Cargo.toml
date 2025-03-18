@@ -1,7 +1,6 @@
 [package]
 edition.workspace = true
 name = "lipl-api-client"
-rust-version.workspace = true
 version.workspace = true
 
 [dependencies]

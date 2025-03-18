@@ -8,14 +8,14 @@ pub mod users;
 pub const PLACEHOLDER_BASE: &str = "https://jsonplaceholder.typicode.com/";
 
 macro_rules! from_json {
-    ($data:expr) => {
+    ($data:expr_2021) => {
         serde_json::from_str($data).unwrap()
     };
 }
 pub(crate) use from_json;
 
 macro_rules! by_id {
-    ($id:expr) => {
+    ($id:expr_2021) => {
         get_all()
             .into_iter()
             .filter(|data| data.id == Some($id))

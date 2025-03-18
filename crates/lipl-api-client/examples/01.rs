@@ -1,5 +1,5 @@
 use lipl_api_client::{ApiClientBuilder, Authentication, LiplApiClient};
-use lipl_core::{error::reqwest_error, HasSummary, LiplRepo, Result};
+use lipl_core::{HasSummary, LiplRepo, Result, error::reqwest_error};
 
 const PREFIX: &str = "https://www.paulmin.nl/lipl/api/v1/";
 

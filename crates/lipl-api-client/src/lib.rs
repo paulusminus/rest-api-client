@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use futures_util::TryFutureExt;
 use lipl_core::{
-    error::reqwest_error, LiplRepo, Lyric, LyricPost, Playlist, PlaylistPost, Result, Summary, Uuid,
+    LiplRepo, Lyric, LyricPost, Playlist, PlaylistPost, Result, Summary, Uuid, error::reqwest_error,
 };
 pub use rest_json_client::{ApiClient, ApiClientBuilder};
 pub use rest_json_client::{Authentication, BasicAuthentication};
