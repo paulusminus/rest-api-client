@@ -53,17 +53,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "async-trait"
-version = "0.1.89"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9035ad2d096bed7955a320ee7e2230574d28fd3c3a0f186cbea1ff3c7eed5dbb"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "atomic-waker"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -745,7 +734,6 @@ checksum = "df1d3c3b53da64cf5760482273a98e575c651a67eec7f77df96b5b642de8f039"
 name = "lipl-api-client"
 version = "0.2.4"
 dependencies = [
- "async-trait",
  "futures-util",
  "lipl-core",
  "rest-json-client",
@@ -754,12 +742,13 @@ dependencies = [
 
 [[package]]
 name = "lipl-core"
-version = "0.5.5"
-source = "git+https://github.com/paulusminus/lipl-storage#1285e1b196e7f1efd54aa9896665a9882a7530ad"
+version = "0.5.6"
+source = "git+https://github.com/paulusminus/lipl-storage?tag=v0.5.6#c3ebd98ecd157c994e13dd844eb0051a306385ef"
 dependencies = [
  "bincode",
  "bs58",
  "etag",
+ "futures-util",
  "serde",
  "serde_with",
  "thiserror",

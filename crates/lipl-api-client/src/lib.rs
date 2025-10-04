@@ -1,5 +1,5 @@
-use async_trait::async_trait;
-use futures_util::TryFutureExt;
+use futures_util::future::BoxFuture;
+use futures_util::{FutureExt, TryFutureExt};
 use lipl_core::{
     LiplRepo, Lyric, LyricPost, Playlist, PlaylistPost, Result, Summary, Uuid, error::reqwest_error,
 };
@@ -30,76 +30,99 @@ impl LiplApiClient {
     }
 }
 
-#[async_trait]
 impl LiplRepo for LiplApiClient {
-    async fn get_lyrics(&self) -> Result<Vec<Lyric>> {
-        self.api_client
-            .get(&format!("{LYRIC}?{FULL}"))
-            .map_err(reqwest_error)
-            .await
+    fn get_lyrics(&self) -> BoxFuture<'_, Result<Vec<Lyric>>> {
+        async move {
+            self.api_client
+                .get(&format!("{LYRIC}?{FULL}"))
+                .map_err(reqwest_error)
+                .await
+        }
+        .boxed()
     }
 
-    async fn get_lyric_summaries(&self) -> Result<Vec<Summary>> {
-        self.api_client.get(LYRIC).map_err(reqwest_error).await
+    fn get_lyric_summaries(&self) -> BoxFuture<'_, Result<Vec<Summary>>> {
+        async move { self.api_client.get(LYRIC).map_err(reqwest_error).await }.boxed()
     }
 
-    async fn get_lyric(&self, uuid: Uuid) -> Result<Lyric> {
-        self.api_client
-            .get(&format!("{LYRIC}/{uuid}"))
-            .map_err(reqwest_error)
-            .await
+    fn get_lyric(&self, uuid: Uuid) -> BoxFuture<'_, Result<Lyric>> {
+        async move {
+            self.api_client
+                .get(&format!("{LYRIC}/{uuid}"))
+                .map_err(reqwest_error)
+                .await
+        }
+        .boxed()
     }
 
-    async fn upsert_lyric(&self, lyric: Lyric) -> Result<Lyric> {
-        self.api_client
-            .post(&format!("{LYRIC}/{}", lyric.id), LyricPost::from(lyric))
-            .map_err(reqwest_error)
-            .await
+    fn upsert_lyric(&self, lyric: Lyric) -> BoxFuture<'_, Result<Lyric>> {
+        async move {
+            self.api_client
+                .post(&format!("{LYRIC}/{}", lyric.id), LyricPost::from(lyric))
+                .map_err(reqwest_error)
+                .await
+        }
+        .boxed()
     }
 
-    async fn delete_lyric(&self, uuid: Uuid) -> Result<()> {
-        self.api_client
-            .delete(&format!("{LYRIC}/{uuid}"))
-            .map_err(reqwest_error)
-            .await
+    fn delete_lyric(&self, uuid: Uuid) -> BoxFuture<'_, Result<()>> {
+        async move {
+            self.api_client
+                .delete(&format!("{LYRIC}/{uuid}"))
+                .map_err(reqwest_error)
+                .await
+        }
+        .boxed()
     }
 
-    async fn get_playlists(&self) -> Result<Vec<Playlist>> {
-        self.api_client
-            .get(&format!("{PLAYLIST}?{FULL}"))
-            .map_err(reqwest_error)
-            .await
+    fn get_playlists(&self) -> BoxFuture<'_, Result<Vec<Playlist>>> {
+        async move {
+            self.api_client
+                .get(&format!("{PLAYLIST}?{FULL}"))
+                .map_err(reqwest_error)
+                .await
+        }
+        .boxed()
     }
 
-    async fn get_playlist_summaries(&self) -> Result<Vec<Summary>> {
-        self.api_client.get(PLAYLIST).map_err(reqwest_error).await
+    fn get_playlist_summaries(&self) -> BoxFuture<'_, Result<Vec<Summary>>> {
+        async move { self.api_client.get(PLAYLIST).map_err(reqwest_error).await }.boxed()
     }
 
-    async fn get_playlist(&self, uuid: Uuid) -> Result<Playlist> {
-        self.api_client
-            .get(&format!("{PLAYLIST}/{uuid}"))
-            .map_err(reqwest_error)
-            .await
+    fn get_playlist(&self, uuid: Uuid) -> BoxFuture<'_, Result<Playlist>> {
+        async move {
+            self.api_client
+                .get(&format!("{PLAYLIST}/{uuid}"))
+                .map_err(reqwest_error)
+                .await
+        }
+        .boxed()
     }
 
-    async fn upsert_playlist(&self, playlist: Playlist) -> Result<Playlist> {
-        self.api_client
-            .post(
-                &format!("{PLAYLIST}/{}", playlist.id),
-                PlaylistPost::from(playlist),
-            )
-            .map_err(reqwest_error)
-            .await
+    fn upsert_playlist(&self, playlist: Playlist) -> BoxFuture<'_, Result<Playlist>> {
+        async move {
+            self.api_client
+                .post(
+                    &format!("{PLAYLIST}/{}", playlist.id),
+                    PlaylistPost::from(playlist),
+                )
+                .map_err(reqwest_error)
+                .await
+        }
+        .boxed()
     }
 
-    async fn delete_playlist(&self, uuid: Uuid) -> Result<()> {
-        self.api_client
-            .delete(&format!("{PLAYLIST}/{uuid}"))
-            .map_err(reqwest_error)
-            .await
+    fn delete_playlist(&self, uuid: Uuid) -> BoxFuture<'_, Result<()>> {
+        async move {
+            self.api_client
+                .delete(&format!("{PLAYLIST}/{uuid}"))
+                .map_err(reqwest_error)
+                .await
+        }
+        .boxed()
     }
 
-    async fn stop(&self) -> Result<()> {
-        Ok(())
+    fn stop(&self) -> BoxFuture<'_, Result<()>> {
+        futures_util::future::ready(Ok(())).boxed()
     }
 }
