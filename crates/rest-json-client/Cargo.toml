@@ -9,7 +9,7 @@ version.workspace = true
 
 [dependencies]
 futures-util = "0.3"
-reqwest = { version = "0.12", features = ["json", "gzip"] }
+reqwest = { version = "0.13", features = ["json", "gzip"] }
 serde = { version = "1", features = ["derive"] }
 
 [dev-dependencies]
